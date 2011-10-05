@@ -97,7 +97,7 @@ public class MessageCreatorValidator extends AbstractValidator {
 			return new MockResult().use(view); // ignore anything, no errors
 												// occurred
 		}
-		result.include("errors", errors);
+		result.include("errors", getErrors());
 		if (Info.isOldComponent(resource.getResource())) {
 			info.setResult("invalid");
 			result.use(Results.page()).defaultView();
@@ -125,7 +125,8 @@ public class MessageCreatorValidator extends AbstractValidator {
 	public List<Message> getErrors() {
 		List<Message> messages = new ArrayList<Message>();
 		for (ValidationMessage message : errors) {
-			messages.add(new br.com.caelum.vraptor.validator.ValidationMessage(message.getPath(), message.getCategory()));
+			FixedMessage fixedMessage = (FixedMessage) message;
+			messages.add(new br.com.caelum.vraptor.validator.ValidationMessage(fixedMessage.getKey(), fixedMessage.getCategory()));
 		}
 		return messages;
 	}
