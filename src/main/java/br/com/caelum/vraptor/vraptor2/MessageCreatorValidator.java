@@ -37,6 +37,7 @@ import br.com.caelum.vraptor.resource.ResourceMethod;
 import br.com.caelum.vraptor.util.test.MockResult;
 import br.com.caelum.vraptor.validator.AbstractValidator;
 import br.com.caelum.vraptor.validator.BeanValidator;
+import br.com.caelum.vraptor.validator.I18nMessage;
 import br.com.caelum.vraptor.validator.Message;
 import br.com.caelum.vraptor.validator.ValidationException;
 import br.com.caelum.vraptor.validator.Validations;
@@ -108,6 +109,9 @@ public class MessageCreatorValidator extends AbstractValidator {
 	}
 
 	public void add(Message message) {
+		if (message instanceof I18nMessage && !((I18nMessage) message).hasBundle()) {
+    		((I18nMessage) message).setBundle(localization.getBundle());
+    	}
 		containsErrors = true;
 		this.errors.add(new FixedMessage(message.getCategory(), message.getMessage(), message.getCategory()));
 	}
